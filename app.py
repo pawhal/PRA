@@ -15,6 +15,7 @@ def main():
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
+<<<<<<< HEAD
 
 DELIMITER $$
 CREATE
@@ -54,3 +55,5 @@ END
 IF;
 END$$
 DELIMITER;
+=======
+>>>>>>> c960297ca7af7ef63848733196f2eff911ce8cfa
