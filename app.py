@@ -1,59 +1,52 @@
-from flask import Flask, render_template
-from flaskext.mysql import MySQL
+from flask import Flask, render_template, request, flash
+from flask_sqlalchemy import SQLAlchemy
+from models import *
 
-mysql = MySQL()
 app = Flask(__name__)
-app.config['MYSQL_DATABASE_USER'] = 'paw'
-app.config['MYSQL_DATABASE_PASSWORD'] = '1234qwer'
-app.config['MYSQL_DATABASE_DB'] = 'pra'
-app.config['MYSQL_DATABASE_HOST'] = '77.55.217.112'
-mysql.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://paw:1234@77.55.217.112/paw'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = '7d441f27d441f27567dasfagsfrgty3546t3y46fyd63'
+db = SQLAlchemy(app)
 
 @app.route("/")
-def main():
+def home_site():
     return render_template("index.html")
+
+@app.route("/questions")
+def questions_site():
+    return render_template("questions.html")
+
+@app.route("/success")
+def success_site():
+    return render_template("success.html")
+
+@app.route("/add", methods=['GET', 'POST'])
+def add_site():
+    form = AddQ(request.form)
+    q1 = Question()
+    #print(form.errors)
+    if request.method == 'POST':
+        question = request.form['question']
+        q1.question = question
+        a = request.form['a']
+        q1.a = a
+        b = request.form['b']
+        q1.b = b
+        c = request.form['c']
+        q1.c = c
+        d = request.form['d']
+        q1.d = d
+        ra = request.form['rightAnswer']
+        q1.rightAnswer = ra
+
+        if form.validate():
+            flash('valid')
+            db.session.add(q1)
+            db.session.commit()
+        else:
+            flash('invalid')
+
+    return render_template('add.html', form=form)
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
-<<<<<<< HEAD
-
-DELIMITER $$
-CREATE
-DEFINER = `paw` @ ` % ` PROCEDURE `
-createUser
-`(
-     IN p_name VARCHAR(45),
- IN
-p_usernameVARCHAR(45),
-IN
-p_password
-VARCHAR(45)
-)
-BEGIN
-if (select exists (select 1 from users where username = p_username) ) THEN
-select
-'Username Exists !!';
-
-ELSE
-
-insert
-into
-users
-(
-    name,
-    username,
-    password
-)
-values
-(
-    p_name,
-    p_username,
-    p_password
-);
-
-END
-IF;
-END$$
-DELIMITER;
-=======
->>>>>>> c960297ca7af7ef63848733196f2eff911ce8cfa

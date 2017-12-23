@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <title>Add</title>
+    </head>
+    <body>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message[1] }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        <form action="" method="post">
+            {{ form.csrf }}
+
+            <div class="input text">
+                {{ form.question.label }} {{ form.question }}
+            </div>
+            <div class="input text">
+                {{ form.a.label }} {{ form.a }}
+            </div>
+            <div class="input text">
+                {{ form.b.label }} {{ form.b }}
+            </div>
+            <div class="input text">
+                {{ form.c.label }} {{ form.c }}
+            </div>
+            <div class="input text">
+                {{ form.d.label }} {{ form.d }}
+            </div>
+            <div class="input text">
+                {{ form.rightAnswer.label }} {{ form.rightAnswer }}
+            </div>
+            <div class="input submit">
+                <input type="submit" value="Submit" />
+            </div>
+        </form>
+    </body>
+</html>
