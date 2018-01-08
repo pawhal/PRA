@@ -1,68 +1,24 @@
 from manage import db
-from wtforms import Form, TextField, TextAreaField, validators, PasswordField, StringField, SubmitField
-
-
-class Question(db.Model):
-    __tablename__ = 'questions'
-    id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.String(100))
-    a = db.Column(db.String(100))
-    b = db.Column(db.String(100))
-    c = db.Column(db.String(100))
-    d = db.Column(db.String(100))
-    rightAnswer = db.Column(db.CHAR)
-
-    def __repr__(self):
-        return '<Question:{1} {2}>'.format(self.question, self.rightAnswer)
-
-
-class Answer(db.Model):
-    __tablename__ = 'answers'
-    id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    question = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
-    answer = db.Column(db.CHAR)
 
 
 class User(db.Model):
-    def __init__(self):
-        self.is_authenticated = True
-        self.is_active = True
-        self.is_anonymous = False
-        self.role = "User"
-
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(35))
-    email = db.Column(db.String(35))
-    password = db.Column(db.String(35))
-    role = db.Column(db.String(10))
-    is_authenticated = db.Column(db.Boolean)
-    is_active = db.Column(db.Boolean)
-    is_anonymous = db.Column(db.Boolean)
-
-    def get_id(self):
-            return str(self.id)
+    name = db.Column(db.String(35), primary_key=True, unique=True)
+    password = db.Column(db.String(200))
 
     def __repr__(self):
-        return '<User:{1} {2}>'.format(self.name)
-
-# noinspection PyDeprecation,PyDeprecation,PyDeprecation,PyDeprecation,PyDeprecation,PyDeprecation
-class AddQ(Form):
-    question = TextField('Question:', validators=[validators.required()])
-    a = TextField('a:', validators=[validators.required()])
-    b = TextField('b:', validators=[validators.required()])
-    c = TextField('c:', validators=[validators.required()])
-    d = TextField('d:', validators=[validators.required()])
-    rightAnswer = TextField('Which one is right?:', validators=[validators.required()])
+        return '<User:{0}>'.format(self.name)
 
 
-class Register(Form):
-    name = TextField('Name:', validators=[validators.required()])
-    email = TextField('Email:', validators=[validators.required(), validators.Length(min=6, max=35)])
-    password = PasswordField('Password:', validators=[validators.required(), validators.Length(min=3, max=35)])
+class Receipt(db.Model):
+    __tablename__ = 'receipts'
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(35), db.ForeignKey('users.name'))
+    name = db.Column(db.String(50))
+    category = db.Column(db.String(25))
+    cost = db.Column(db.Numeric)
+    date = db.Column(db.DateTime)
 
+    def __repr__(self):
+        return '<Receipt:{0} {1}>'.format(self.name, self.cost)
 
-class Login(Form):
-    name = TextField('Name:', validators=[validators.required()])
-    password = PasswordField('Password:', validators=[validators.required(), validators.Length(min=3, max=35)])

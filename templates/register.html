@@ -1,30 +1,73 @@
 <!DOCTYPE html>
+<!-- saved from url=(0050)https://getbootstrap.com/docs/3.3/examples/signin/ -->
 <html lang="pl">
-    <head>
-        <link rel="stylesheet" type="text/css" href="ehh.css" media="screen">
-    </head>
-    <body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://getbootstrap.com/docs/3.3/favicon.ico">
+
+    <title>Zarejestruj się!</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/signup_files/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/static/signup_files/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/signup_files/signin.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="/static/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/static/signup_files/ie-emulation-modes-warning.js.download"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
 
 <div class="container">
-  <h2>Rejestracja</h2>
-  <form  action="" method="post" role="form">
-    <div class="form-group">
-      <label for="name">Nazwa użytkownika:</label>
-      <input type="text" class="form-control" id="name" name="name" placeholder="What's your name?">
-      <br>
-      <label for="email">Adres e-mail:</label>
-      <input type="text" class="form-control" id="email" name="email" placeholder="Your email will be used to contact you.">
-      <br>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% block body %}{% endblock %}
 
-      <label for="password">Hasło:</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="Enter a password.">
+    <form class="form-signin" method="post" action="{{ url_for('register') }}">
+        <h2 class="form-signin-heading">Zarejestruj się!</h2>
+        <div class="form-group has-success">
+            <label for="username" class="sr-only">Login</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required
+                   autofocus>
+        </div>
+        <div class="form-group has-success">
+            <label for="password" class="sr-only">Hasło</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </div>
+        <button class="btn btn-lg btn-success btn-block" type="submit">Zarejestruj</button>
+    </form>
+
+</div> <!-- /container -->
 
 
-    </div>
-    <button type="submit" class="btn btn-success">Potwierdź</button>
-  </form>
-</div>
-<br>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/static/signup_files/ie10-viewport-bug-workaround.js.download"></script>
+
+
 </body>
 </html>
