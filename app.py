@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, jsonify, redirect, url_for, session
+from flask import Flask, render_template, request, jsonify, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -20,23 +20,21 @@ def home_site():
 def logout():
     if 'user' in session:
         session.pop('user')
-
-        flash('Do zobaczenia!')
     return redirect("/")
 
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        data = request.json
+        username = data['username']
+        password = data['password']
 
         password = generate_password_hash(password)
 
         user = User.query.filter_by(name=username).first()
 
         if user:
-            flash('Niestety, użytkownik o takiej nazwie już istnieje')
             return redirect("/register")
 
         user = User(name=username, password=password)
@@ -44,18 +42,22 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash('Zarejestrowano! Możesz się teraz zalogować')
-
         return redirect("/")
 
-    return render_template("register.html")
+
+@app.route("/receipts", methods=['GET'])
+def receipts():
+    r = Receipt.query.all()
+    return jsonify(receipts=[i.serialize for i in r])
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=['POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        data = request.json
+
+        username = data['username']
+        password = data['password']
 
         user = User.query.filter_by(name=username).first()
 
@@ -65,36 +67,25 @@ def login():
             if check_password_hash(password_hash, password):
                 session['user'] = username
 
-                flash('Zalogowano poprawnie!')
-                return redirect("/")
-        else:
-            flash('Niepoprawna nazwa użytkownika lub hasło, spróbuj ponownie')
-            return redirect("/login")
-
-    return render_template("login.html")
+    return redirect("/")
 
 
-
-@app.route("/addreceipt", methods=['GET','POST'])
+@app.route("/addreceipt", methods=['POST'])
 def addreceipt():
-    if request.method == "GET":
-        return render_template("addreceipt.html")
     if request.method == 'POST':
         user = session['user']
-        name = request.form['name']
-        category = request.form['category']
-        cost = float(request.form['cost'])
-        date = request.form['date']
+        data = request.json
+        name = data['name']
+        category = data['category']
+        datetime = data['date']
+        cost = float(data['cost'])
 
-        new_receipt = Receipt(user=user, name=name, category=category, cost=cost, date=date)
+        new_receipt = Receipt(user=user, name=name, category=category, cost=cost, date=datetime)
 
         db.session.add(new_receipt)
         db.session.commit()
 
-        flash("Dodano nowy wydatek!")
-
         return redirect("/addreceipt")
-    return render_template("addreceipt.html")
 
 
 if __name__ == "__main__":
