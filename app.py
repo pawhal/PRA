@@ -46,7 +46,6 @@ def myreceipts():
     dataj = request.json
     data = json.loads(dataj)
     user = data.get('user')
-    print(user)
     r = Receipt.query.filter(Receipt.user == user)
 
     return jsonify(receipts=[i.serialize for i in r])
