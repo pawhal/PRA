@@ -24,6 +24,8 @@ class Receipt(db.Model):
     @property
     def serialize(self):
         return {
+            'id': self.id,
+            'user': self.user,
             'name': self.name,
             'category': self.category,
             'cost': float(self.cost),

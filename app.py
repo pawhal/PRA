@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
@@ -14,7 +14,7 @@ from models import *
 
 @app.route("/")
 def home_site():
-    return render_template("index.html")
+    return ""
 
 
 @app.route("/register", methods=['POST'])
@@ -31,7 +31,7 @@ def register():
         user = User.query.filter_by(name=username).first()
 
         if user:
-            return redirect("/register"),
+            return "", 500
 
         user = User(name=username, password=password)
 
@@ -66,9 +66,9 @@ def login():
             password_hash = user.password
 
             if check_password_hash(password_hash, password):
-                return redirect("/"), 583
+                return "", 583
 
-    return redirect("/")
+    return "", 500
 
 
 @app.route("/addreceipt", methods=['POST'])
@@ -88,8 +88,8 @@ def addreceipt():
         db.session.add(new_receipt)
         db.session.commit()
 
-        return redirect("/addreceipt"), 583
+        return "", 583
 
 
 if __name__ == "__main__":
-    app.run(host = "0.0.0.0")
+    app.run(host = "127.0.0.2")
