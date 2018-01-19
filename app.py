@@ -91,5 +91,25 @@ def addreceipt():
         return "", 583
 
 
+@app.route("/edit", methods=['POST'])
+def addreceipt():
+    if request.method == 'POST':
+        dataj = request.json
+        data = json.loads(dataj)
+        user = data.get('user')
+        name = data.get('name')
+        category = data.get('category')
+        datetime = data.get('datetime')
+        cost = float(data.get('cost'))
+        print(datetime)
+
+        new_receipt = Receipt(user=user, name=name, category=category, cost=cost, date=datetime)
+
+        db.session.add(new_receipt)
+        db.session.commit()
+
+        return "", 583
+
+
 if __name__ == "__main__":
     app.run(host = "127.0.0.2")
