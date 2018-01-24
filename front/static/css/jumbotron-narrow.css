@@ -76,4 +76,11 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+<<<<<<< HEAD
+=======
+}
+
+td {
+   text-align: left;
+>>>>>>> 8b97d12e27444bf35bcee688e49051fd93682eb7
 }
