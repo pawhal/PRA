@@ -51,6 +51,18 @@ def myreceipts():
     return jsonify(receipts=[i.serialize for i in r])
 
 
+@app.route("/delete", methods=['POST'])
+def delete():
+    dataj = request.json
+    data = json.loads(dataj)
+    id = data.get('id')
+    r = Receipt.query.filter(Receipt.id == id).first()
+    db.session.delete(r)
+    db.session.commit()
+
+    return "", 583
+
+
 @app.route("/login", methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -81,7 +93,7 @@ def addreceipt():
         category = data.get('category')
         datetime = data.get('datetime')
         cost = float(data.get('cost'))
-        print(datetime)
+
 
         new_receipt = Receipt(user=user, name=name, category=category, cost=cost, date=datetime)
 
@@ -92,7 +104,7 @@ def addreceipt():
 
 
 @app.route("/edit", methods=['POST'])
-def addreceipt():
+def edit():
     if request.method == 'POST':
         dataj = request.json
         data = json.loads(dataj)
