@@ -83,7 +83,7 @@
                     <td>{{ x.cost }} zł</td>
                     <td>{{ x.date[5:-13] }}</td>
                     <td><a href="{{ url_for('edit')}}">Edytuj</a></td>
-                    <td><a href="{{ url_for('myreceipts')}}">Usuń</a></td>
+                    <td><a href="{{ url_for('delete', id = x.id)}}">Usuń</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

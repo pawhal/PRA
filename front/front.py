@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, session, jsonify
 import requests
 import json
 
-server = 'http://127.0.0.2:5000'
+server = 'http://127.0.0.2:5005'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'kjdgfsf78gyb5i4u8bgw876gb9osfvg8659oa86rvg9o'
@@ -74,6 +74,7 @@ def addreceipt():
         cost = request.form["cost"]
         datetime = request.form["date"]
 
+        print(category)
         receipt = {
             "user": user,
             "name": name,
@@ -87,6 +88,15 @@ def addreceipt():
             return redirect("/")
         else:
             return redirect("/addreceipt")
+
+
+@app.route('/delete/<int:id>', methods=['GET','POST'])
+def delete(id):
+    id_to_delete = { "id": id }
+    r = json.dumps(id_to_delete)
+    req = requests.post(server + '/delete', json=r)
+    if req.status_code == 583:
+        return redirect("/myreceipts")
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -131,4 +141,4 @@ def myreceipts():
 
 
 if __name__ == "__main__":
-    app.run(host = "localhost")
+    app.run(host = "0.0.0.0")
