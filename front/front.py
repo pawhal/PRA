@@ -74,7 +74,6 @@ def addreceipt():
         cost = request.form["cost"]
         datetime = request.form["date"]
 
-        print(category)
         receipt = {
             "user": user,
             "name": name,
@@ -90,7 +89,7 @@ def addreceipt():
             return redirect("/addreceipt")
 
 
-@app.route('/delete/<int:id>', methods=['GET','POST'])
+@app.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
     id_to_delete = { "id": id }
     r = json.dumps(id_to_delete)
@@ -99,10 +98,20 @@ def delete(id):
         return redirect("/myreceipts")
 
 
-@app.route('/edit', methods=['GET', 'POST'])
-def edit():
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
     if request.method == 'GET':
-        return render_template("edit.html")
+        mr = {"id": id}
+        r = json.dumps(mr)
+        r = requests.post(server + '/receipt', json=r)
+
+        response = json.loads(r.content)
+        response = response['receipts']
+        response = response[0]
+        defcost = response['cost']
+        defname = response['name']
+
+        return render_template("edit.html", id = id, defcost = defcost, defname = defname)
     if request.method == 'POST':
         user = session['user']
         name = request.form["name"]
@@ -111,6 +120,7 @@ def edit():
         datetime = request.form["date"]
 
         receipt = {
+            "id": id,
             "user": user,
             "name": name,
             "category": category,
@@ -118,12 +128,11 @@ def edit():
             "datetime": datetime
         }
         r = json.dumps(receipt)
-        req = requests.post(server + '/addreceipt', json=r)
+        req = requests.post(server + '/edit', json=r)
         if req.status_code == 583:
-            return redirect("/myreceipts")
+            return redirect("/")
         else:
             return redirect("/edit")
-
 
 
 @app.route('/myreceipts', methods=['GET', 'POST'])
@@ -135,7 +144,6 @@ def myreceipts():
 
     response = json.loads(r.content)
     response = response['receipts']
-
 
     return render_template("myreceipts.html", **locals())
 

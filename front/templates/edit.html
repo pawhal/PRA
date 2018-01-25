@@ -36,7 +36,7 @@
 <body>
 
 <div class="container">
-    <form class="form-signin" method="post" action="{{ url_for('edit', id = x.id) }}">
+    <form class="form-signin" method="post" action="{{ url_for('edit', id = id) }}">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul class=flashes>
@@ -50,8 +50,7 @@
         <h2 class="form-signin-heading">Edytuj</h2>
         <div class="form-group has-success">
             <label for="name" class="sr-only">Nazwa</label>
-            <input type="text" id="name" name="name" class="form-control" placeholder="Nazwa"
-                   required autofocus>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Nazwa" value={{defname}} required autofocus>
         </div>
         <div class="form-group has-success">
             <label for="category" class="sr-only">Kategoria</label>
@@ -69,7 +68,7 @@
         </div>
         <div class="form-group has-success">
             <label for="cost" class="sr-only">Cena</label>
-            <input type="text" id="cost" name="cost" class="form-control" placeholder="Cena" required>
+            <input type="text" id="cost" name="cost" class="form-control" placeholder="Cena" value={{defcost}} required>
         </div>
         <div class="form-group has-success">
             <label for="date" class="sr-only">Data</label>

@@ -35,7 +35,6 @@
 <body>
 
 <div class="container">
-    <!-- To jest zdecydowanie w zlym miejscu ale zmienie to pozniej -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul class=flashes>
@@ -82,7 +81,7 @@
                     <td>{{ x.category }}</td>
                     <td>{{ x.cost }} zł</td>
                     <td>{{ x.date[5:-13] }}</td>
-                    <td><a href="{{ url_for('edit')}}">Edytuj</a></td>
+                    <td><a href="{{ url_for('edit', id = x.id)}}">Edytuj</a></td>
                     <td><a href="{{ url_for('delete', id = x.id)}}">Usuń</a></td>
                 </tr>
                 {% endfor %}

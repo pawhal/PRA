@@ -7,7 +7,6 @@ import json
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://paw:1234@77.55.217.112/paw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.config['SECRET_KEY'] = '7d441f27d441f27567dasfagsfrgty3546t3y46fyd63'
 db = SQLAlchemy(app)
 from models import *
 
@@ -47,6 +46,16 @@ def myreceipts():
     data = json.loads(dataj)
     user = data.get('user')
     r = Receipt.query.filter(Receipt.user == user)
+
+    return jsonify(receipts=[i.serialize for i in r])
+
+
+@app.route("/receipt", methods=['GET', 'POST'])
+def receipt():
+    dataj = request.json
+    data = json.loads(dataj)
+    id = data.get('id')
+    r = Receipt.query.filter(Receipt.id == id)
 
     return jsonify(receipts=[i.serialize for i in r])
 
@@ -108,16 +117,19 @@ def edit():
     if request.method == 'POST':
         dataj = request.json
         data = json.loads(dataj)
-        user = data.get('user')
+        up_id = data.get('id')
         name = data.get('name')
         category = data.get('category')
         datetime = data.get('datetime')
         cost = float(data.get('cost'))
-        print(datetime)
 
-        new_receipt = Receipt(user=user, name=name, category=category, cost=cost, date=datetime)
+        updated = Receipt.query.filter_by(id=up_id).first()
 
-        db.session.add(new_receipt)
+        updated.name = name
+        updated.category = category
+        updated.datetime = datetime
+        updated.cost = cost
+
         db.session.commit()
 
         return "", 583
