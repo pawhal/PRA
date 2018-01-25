@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)https://getbootstrap.com/docs/3.3/examples/signin/ -->
-<html lang="pl">
+ <html lang="pl">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -37,7 +36,7 @@
 <body>
 
 <div class="container">
-    <form class="form-signin" method="post" action="{{ url_for('edit') }}">
+    <form class="form-signin" method="post" action="{{ url_for('edit', id = x.id) }}">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul class=flashes>
@@ -56,7 +55,17 @@
         </div>
         <div class="form-group has-success">
             <label for="category" class="sr-only">Kategoria</label>
-            <input type="text" id="category" name="category" class="form-control" placeholder="Kategoria" required>
+            <select class="form-control" type="text" id="category" name="category">
+                <option value=Auto>Auto</option>
+                <option value="Alkohol">Alkohol</option>
+                <option value="Chemia">Chemia</option>
+                <option value="Jedzenie">Jedzenie</option>
+                <option value="Kosmetyki">Kosmetyki</option>
+                <option value="Rachunki">Rachunki</option>
+                <option value="Rozrywka">Rozrywka</option>
+                <option value="Sport">Sport</option>
+                <option value="Transport publiczny">Transport publiczny</option>
+            </select>
         </div>
         <div class="form-group has-success">
             <label for="cost" class="sr-only">Cena</label>
@@ -66,7 +75,7 @@
             <label for="date" class="sr-only">Data</label>
             <input type="date" id="date" name="date" class="form-control" placeholder="Data" required>
         </div>
-        <button class="btn btn-lg btn-success btn-block" type="submit">Zapisz</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit">Zapisz zmiany</button>
     </form>
 
 </div> <!-- /container -->
