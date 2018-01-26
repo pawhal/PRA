@@ -13,7 +13,6 @@ def get_data():
     if request.method == 'GET':
         if session.get('user'):
             return redirect("/myreceipts")
-
         else:
             return render_template("index.html")
 

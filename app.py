@@ -103,7 +103,6 @@ def addreceipt():
         datetime = data.get('datetime')
         cost = float(data.get('cost'))
 
-
         new_receipt = Receipt(user=user, name=name, category=category, cost=cost, date=datetime)
 
         db.session.add(new_receipt)
